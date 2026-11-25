@@ -19,7 +19,7 @@ const out: Record<string, unknown> = {};
 for (const [name, kp] of [["landed", "landed-keypair.json"], ["naive_cashout", "naive_cashout-keypair.json"]] as const) {
   const so = resolve(ROOT, `target/deploy/${name}.so`);
   const t0 = Date.now();
-  const res = execFileSync(SOLANA, ["program", "deploy", so, "--program-id", resolve(ROOT, `target/deploy/${kp}`), "-u", url, "--output", "json", "--with-compute-unit-price", "1000"], { encoding: "utf8" });
+  const res = execFileSync(SOLANA, ["program", "deploy", so, "--program-id", resolve(ROOT, `target/deploy/${kp}`), "-u", url, "--output", "json", "--with-compute-unit-price", "1000", "--use-rpc"], { encoding: "utf8" });
   const j = JSON.parse(res.slice(res.indexOf("{")));
   const sig = j.signature ?? null;
   console.log(`${name}: ${j.programId} sig=${sig}`);

@@ -74,8 +74,9 @@ export class LandedClient {
       if (kps.length) tx.partialSign(...kps);
       let signed = tx;
       for (const s of signers) if (!(s instanceof Keypair)) signed = await s.signTransaction(signed);
-      sig = await c.sendRawTransaction(signed.serialize(), { skipPreflight: layer === "ER" ? false : false, maxRetries: 3 });
-      const conf = await c.confirmTransaction({ signature: sig, blockhash, lastValidBlockHeight }, "confirmed");
+      const raw = signed.serialize();
+      sig = await c.sendRawTransaction(raw, { skipPreflight: false, maxRetries: 3 });
+      const conf = await this.confirm(c, sig, raw, lastValidBlockHeight, layer);
       const latencyMs = Math.round(performance.now() - t0);
       if (conf.value.err) {
         const r: SendResult = { sig, latencyMs, slot: conf.context.slot, layer, ok: false, err: JSON.stringify(conf.value.err) };
@@ -92,6 +93,27 @@ export class LandedClient {
       const r: SendResult = { sig, latencyMs: Math.round(performance.now() - t0), slot: null, layer, ok: false, err, logs };
       this.onSend?.(label, r);
       return r;
+    }
+  }
+
+  /**
+   * HTTP-polling confirmation (no websocket): works behind proxies and in every
+   * browser. Rebroadcasts L1 txs until confirmed or the blockhash expires.
+   */
+  private async confirm(c: Connection, sig: string, raw: Uint8Array, lastValidBlockHeight: number, layer: Layer) {
+    const every = layer === "ER" ? 120 : 500;
+    for (let i = 0; ; i++) {
+      const st = await c.getSignatureStatuses([sig]).catch(() => null);
+      const v = st?.value[0];
+      if (v && (v.confirmationStatus === "confirmed" || v.confirmationStatus === "finalized" || v.err))
+        return { context: { slot: v.slot }, value: { err: v.err } };
+      if (layer === "L1" && i % 6 === 5) {
+        const h = await c.getBlockHeight("confirmed").catch(() => 0);
+        if (h > lastValidBlockHeight) throw new Error(`Signature ${sig} has expired: block height exceeded.`);
+        void c.sendRawTransaction(raw, { skipPreflight: true, maxRetries: 0 }).catch(() => null);
+      }
+      if (layer === "ER" && i > 250) throw new Error(`ER confirmation timeout for ${sig}`);
+      await sleep(every);
     }
   }
 

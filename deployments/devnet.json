@@ -1,0 +1,53 @@
+{
+  "cluster": "devnet",
+  "programs": {
+    "landed": {
+      "program_id": "37AZMxLPm9RY8AKQk4s4oMJaovpRorGQfUmMUbTxiqGq",
+      "deploy_sig": "2CnwD2g6HvpWhxVaJbzvqXXRNFkpG9mrSnHANornr7aJ4wf2TcnjGx2JDWibDNx4GmWQES8Xh57KHCbiwRa197Un",
+      "so_sha256": "684baef24896ad11d06ae8b8fdfc08cac9b7cd4d7b04e14e49c12b1411d66865",
+      "idl_sha256": "a7b4d50790e25363be25db6df020b4e48d2b0f8509101c98442817416e9dc73f"
+    },
+    "naive_cashout": {
+      "program_id": "BrHd4kAtkATdaJYcv5GtyQ6ebNUneBV2yqe24EPRtxBc",
+      "deploy_sig": "4mABhgfoWMkJn7JgeBhSGurNwGegs77cM5Npe7uWiouFzjvWoshTuvVcUawavFFBGJC2oLAdVBVepmjfiPo5iLz3",
+      "so_sha256": "8907a8e7877addcfbeec1c398feea37b7eeaba07f2bc5d235734d74a0ea62fb2",
+      "idl_sha256": "a8570349252c93b1495c5b7d5a1b40c38669bd40dc5404ecbe4e0501418a7b55"
+    }
+  },
+  "git_commit": "9d1c912a65d4bc7fdfb97200e7a730734ff7c5fe",
+  "versions": {
+    "solana": "solana-cli 3.1.9 (src:765ee54a; feat:1620780344, client:Agave)",
+    "anchor": "anchor-cli 1.0.2",
+    "ephemeral-rollups-sdk": "0.18.0",
+    "session-keys": "3.1.1"
+  },
+  "deployed_at": "2026-11-25T21:11:45.596Z",
+  "updated_at": "2026-11-25T21:13:04.164Z",
+  "validator": {
+    "identity": "MEUGGrYPxKk17hCr7wpT6s8dtNokZj5U2L57vjYMS8e",
+    "endpoint": "https://devnet-eu.magicblock.app",
+    "version": "core 2.0.5"
+  },
+  "addresses": {
+    "config": "9EYDDpFozqZVhmdSjqJLXit4y9Rx4f5yvgyvhNkKF9ZR",
+    "mint": "7bKZVPTXCRt2vNYMHgoxz8gn3tLAHu7QFw8HmtK7cES8",
+    "vault": "GAii9paNauJZH6pa9bcgqXtqMn5uB1qnLXMHVqzuZt1S",
+    "vault_auth": "4MPtiY7zMfPAikm2LvQY8gCVv1QmVGqNv9knN9XBp2cF",
+    "escrow_auth_fee_payer": "3hoF91HDvmFpST2aM9qyB4549szGPFf963NrPTHMBLoA",
+    "action_escrow": "7FxHCrMscw415LyUpRjH21aLqecg4FStXVLknJJhAGJN",
+    "magic_fee_vault": "ByZyZ6322wnM48vn1kVdrsGRLjiLU15t2gJUBdXL4MQb",
+    "treasury": "975AuEv4JhEMCePkYuCbhixPLMUQVzmj2VAqAkme7kCf",
+    "treasury_ledger": "GyHkwcTYahRyTg5wzTrjCVvjNhFfiT2kDLYh6sz9Jexr",
+    "table": "5rR9SAV8QRcMwu46fd5vxgFsogafnawSqRa3nM4641r7",
+    "naive_config": "5zxiChRtx6U8Fav73SgDLZQYaY3uYwGjzSKmcyjq93XG",
+    "naive_vault": "GVn5bAaEs3WkXxWtnctu3wKhugLZvUDuPVDmjQGggrMj",
+    "vrf_identity": "37QBmkgjg7s46zG5V8EvNd3s5NdbGxTXUZ6o9VHcX2D4",
+    "vrf_callback_identity": "3LvtN51dh84N8wLTtSHEyB54DDWKwScZU6upQbjotAW8"
+  },
+  "crank": {
+    "task_id": "5723951988595911691",
+    "schedule_sig": "3RErRwNPEKoP3b4sKgQRxGYCf3kmNG2rKCRecLUZGbjcjTvx659fH2fN7wdcENpP4a3KCA3BuTxEAXBhcUJpZshV",
+    "schedule_err": null
+  },
+  "admin": "452WSNd22LPjnuedzyrygtgjvYs66HtFNSJdZL5685UG"
+}
