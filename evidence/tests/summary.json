@@ -1,0 +1,65 @@
+{
+  "ran_at": "2026-11-25T20:07:06.627Z",
+  "rows": [
+    {
+      "layer": "landed-core: unit + property + fairness (Rust)",
+      "cmd": "cargo test -p landed-core --release",
+      "tests": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 25
+    },
+    {
+      "layer": "landed program: unit (sizes, syscall hashing)",
+      "cmd": "cargo test -p landed --lib",
+      "tests": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 0
+    },
+    {
+      "layer": "program integration on MagicSVM (Rust)",
+      "cmd": "cargo test",
+      "tests": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 51
+    },
+    {
+      "layer": "sdk: golden vectors, decoders, tracker (TS)",
+      "cmd": "npx vitest run",
+      "tests": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 1
+    },
+    {
+      "layer": "verifier: tamper fixtures (TS)",
+      "cmd": "npx vitest run",
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 1
+    },
+    {
+      "layer": "app: unit (TS)",
+      "cmd": "npx vitest run",
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 1
+    }
+  ]
+}

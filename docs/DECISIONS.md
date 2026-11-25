@@ -44,7 +44,7 @@ Format: **date · decision** — alternatives · why. Where the build prompt dis
 - `close_round` advances Open→AwaitingVrf when due, and AwaitingVrf→(new nonce) when a retry is due. Void needs every entrant's ledger, so it stays a separate permissionless instruction (UI/keeper call it).
 
 ### 2026-11-25 · Table is zero-copy; Ledger is Borsh
-- Table ≈ 3.7 KB would be deserialized onto the 4 KB SBF stack by `Account<T>`. Zero-copy keeps it in account memory; explicit `_pad` fields so the byte layout equals the Borsh layout (TS decoding via IDL stays simple). Ledger (~600 B) stays Borsh so L1 rescue code can `try_deserialize` it from an `UncheckedAccount`.
+- Table (3,848 B) would be deserialized onto the 4 KB SBF stack by `Account<T>`. Zero-copy keeps it in account memory; explicit `_pad` fields so the byte layout equals the Borsh layout (TS decoding via IDL stays simple). Ledger (~600 B) stays Borsh so L1 rescue code can `try_deserialize` it from an `UncheckedAccount`.
 
 ### 2026-11-25 · Session keys: our ledger grant + MagicBlock `SessionTokenV2`, both required
 - The session-keys program enforces no spend limits, so the owner records `{signer, cap, expires}` in their ledger via `set_session` (ER), and every session-signed `enter_round`/`request_withdraw`/`leave_solo` must also present a valid `SessionTokenV2` (authority = owner, target = this program, not expired). Withdrawals always go to the owner's ATA, so a stolen session key can at most play within its cap. V1 tokens are rejected by type (`Account<SessionTokenV2>`). Guests don't need sessions: their burner is the owner.

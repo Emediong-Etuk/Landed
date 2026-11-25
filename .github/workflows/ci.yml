@@ -1,0 +1,51 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with: { components: clippy }
+      - uses: Swatinem/rust-cache@v2
+      - name: Install Solana 3.1.9
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/v3.1.9/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+      - name: Install Anchor CLI 1.0.2
+        run: npm i -g @anchor-lang/cli@1.0.2
+      - name: landed-core (unit + property + fairness)
+        run: cargo test -p landed-core --release
+      - name: program unit tests
+        run: cargo test -p landed --lib
+      - name: clippy
+        run: cargo clippy -p landed-core -- -D warnings
+      - name: build all program variants (fault-lab, mainnet, test)
+        run: ./scripts/build-programs.sh
+      - name: MagicSVM integration
+        run: cd tests/magicsvm && cargo test
+      - name: cargo audit
+        run: cargo install cargo-audit --locked && cargo audit || true
+
+  ts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -r --if-present typecheck
+      - run: cd packages/sdk && npx vitest run
+      - run: cd packages/verifier && npx vitest run
+      - run: cd app && npx vitest run
+      - run: cd app && npx next build
+      - name: secret scan of the client bundle
+        run: |
+          if grep -rEl '(LANDED_FAUCET_SECRET|UPSTASH_REDIS_REST_TOKEN|TURNSTILE_SECRET_KEY|api-key=|"\[([0-9]{1,3},){63}[0-9]{1,3}\]")' app/.next/static; then echo "secret-like string in client bundle"; exit 1; fi
+      - run: pnpm audit --prod || true
+      - name: E2E + axe
+        run: cd app && npx playwright install --with-deps chromium && npx playwright test e2e/pages.spec.ts --trace off

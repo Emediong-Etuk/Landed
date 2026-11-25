@@ -1,1 +1,122 @@
-{ "generated_at": null, "deployed": false, "featured": [], "campaigns": [], "metrics": [], "phase0": [], "tests": [], "deployments": null }
+{
+  "generated_at": "2026-11-25T20:17:29.071Z",
+  "deployed": false,
+  "featured": [],
+  "campaigns": [],
+  "metrics": [
+    {
+      "id": "M1",
+      "label": "Withdrawals with injected action failures (lost / total)",
+      "value": "not measured yet",
+      "source": "evidence/results/c3.json"
+    },
+    {
+      "id": "M2",
+      "label": "Dropped action → paid via rescue",
+      "value": "not measured yet",
+      "source": "evidence/results/c3.json"
+    },
+    {
+      "id": "M3",
+      "label": "Cash-outs in one delegation session",
+      "value": "30/30 in MagicSVM (f2_thirty_cashouts_in_one_delegation_session); devnet not measured yet",
+      "source": "evidence/results/c4.json"
+    },
+    {
+      "id": "M4",
+      "label": "Stale VRF callbacks rejected / voided rounds refunded",
+      "value": "100% / 100% in MagicSVM (v2, v3, v4, a13–a16)",
+      "source": "tests/magicsvm/tests/game.rs"
+    },
+    {
+      "id": "M5",
+      "label": "Rounds closed by crank vs watchdog",
+      "value": "not measured yet",
+      "source": "evidence/results/c2.json"
+    },
+    {
+      "id": "M6",
+      "label": "ER entry confirmation latency",
+      "value": "not measured yet",
+      "source": "evidence/ledger.jsonl (enter_round)",
+      "p50": null
+    },
+    {
+      "id": "M7",
+      "label": "Invariants I1–I6",
+      "value": "checked in MagicSVM (assert_i2, assert_i6) + verifier fixtures; devnet not measured yet",
+      "source": "evidence/verifier/"
+    }
+  ],
+  "phase0": [],
+  "tests": [
+    {
+      "layer": "landed-core: unit + property + fairness (Rust)",
+      "cmd": "cargo test -p landed-core --release",
+      "tests": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 25
+    },
+    {
+      "layer": "landed program: unit (sizes, syscall hashing)",
+      "cmd": "cargo test -p landed --lib",
+      "tests": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 0
+    },
+    {
+      "layer": "program integration on MagicSVM (Rust)",
+      "cmd": "cargo test",
+      "tests": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 51
+    },
+    {
+      "layer": "sdk: golden vectors, decoders, tracker (TS)",
+      "cmd": "npx vitest run",
+      "tests": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 1
+    },
+    {
+      "layer": "verifier: tamper fixtures (TS)",
+      "cmd": "npx vitest run",
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 1
+    },
+    {
+      "layer": "app: unit (TS)",
+      "cmd": "npx vitest run",
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "ok": true,
+      "seconds": 1
+    },
+    {
+      "layer": "web E2E + axe a11y (Playwright, desktop + mobile)",
+      "tests": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 1
+    }
+  ],
+  "deployments": null
+}

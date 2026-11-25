@@ -85,12 +85,12 @@ export default function ProofPage() {
         </section>
       )}
       {!!ev?.metrics?.length && (
-        <section className="card overflow-x-auto p-4">
+        <section tabIndex={0} aria-label="Scrollable table" className="card overflow-x-auto p-4">
           <h2 className="text-sm font-semibold text-[var(--color-muted)]">Measured results</h2>
           <table className="mt-2 w-full text-sm"><tbody>{ev.metrics.map((m) => <tr key={m.id} className="border-t hair"><td className="py-1.5 pr-3 text-[var(--color-dim)]">{m.id}</td><td className="pr-3">{m.label}</td><td className="num">{m.value}</td><td className="text-xs text-[var(--color-dim)]">{m.source}</td></tr>)}</tbody></table>
         </section>
       )}
-      <section className="card overflow-x-auto p-4">
+      <section tabIndex={0} aria-label="Scrollable table" className="card overflow-x-auto p-4">
         <h2 className="text-sm font-semibold text-[var(--color-muted)]">Test report</h2>
         <table className="num mt-2 w-full text-sm">
           <thead className="text-left text-[var(--color-dim)]"><tr><th>Layer</th><th>Tests</th><th>Passed</th><th>Failed</th></tr></thead>

@@ -78,7 +78,6 @@ function LabPage() {
   const stranded = naiveRuns.filter((r) => r.checkedAt && !r.paid && r.erOk);
   void eventsFromLogs;
 
-  if (!ready) return <div className="mx-auto max-w-lg pt-6"><JoinPanel /></div>;
 
   return (
     <div className="flex flex-col gap-5" data-tour="lab">
@@ -89,6 +88,8 @@ function LabPage() {
           Left: the documented commit + post-commit-payout pattern. Right: Landed. Same failure, different outcome.
         </p>
       </header>
+      {!ready && <div className="mx-auto w-full max-w-lg"><JoinPanel /></div>}
+      {ready && <>
       <div className="flex flex-wrap items-center gap-2">
         {naiveReady === false && <button className="btn btn-ghost" disabled={busy} onClick={() => void openNaive()}>Open a baseline account (30 dUSDC)</button>}
         <button className="btn btn-primary" disabled={busy || naiveReady === null} onClick={() => void breakBoth()}>
@@ -126,7 +127,7 @@ function LabPage() {
           {!landedOps.length && <p className="mt-3 text-sm text-[var(--color-dim)]">No runs yet.</p>}
         </section>
       </div>
-      <section className="card overflow-x-auto p-4">
+      <section tabIndex={0} aria-label="Scrollable table" className="card overflow-x-auto p-4">
         <h2 className="mb-2 text-sm font-semibold text-[var(--color-muted)]">Results this session</h2>
         <table className="w-full text-sm">
           <thead className="text-left text-[var(--color-dim)]"><tr><th className="py-1">Pattern</th><th>Failing payouts</th><th>Paid</th><th>Lost</th></tr></thead>
@@ -136,6 +137,7 @@ function LabPage() {
           </tbody>
         </table>
       </section>
+      </>}
     </div>
   );
 }

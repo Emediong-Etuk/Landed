@@ -19,7 +19,7 @@
     "deploy:devnet": "tsx scripts/deploy-devnet.ts",
     "init:devnet": "tsx scripts/init-devnet.ts",
     "evidence:summarize": "tsx scripts/evidence-summarize.ts",
-    "spike": "tsx spikes/run.ts",
+    "spike": "tsx tests/devnet/campaigns.ts",
     "campaign:c1": "tsx tests/devnet/campaigns.ts c1",
     "campaign:c2": "tsx tests/devnet/campaigns.ts c2",
     "campaign:c3": "tsx tests/devnet/campaigns.ts c3",
@@ -28,9 +28,10 @@
     "campaign:c6": "tsx tests/devnet/campaigns.ts c6",
     "campaign:c7": "tsx tests/devnet/campaigns.ts c7",
     "load:l1": "tsx tests/devnet/load.ts",
-    "record:broll": "pnpm --filter @landed/app exec tsx e2e/record-broll.ts",
+    "record:broll": "cd app && npx tsx e2e/record-broll.ts",
     "setup:local": "./scripts/setup-local.sh",
-    "test:all": "tsx scripts/run-tests.ts"
+    "test:all": "tsx scripts/run-tests.ts",
+    "campaign": "tsx tests/devnet/campaigns.ts"
   },
   "devDependencies": {
     "tsx": "^4.20.6",

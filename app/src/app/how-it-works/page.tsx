@@ -6,7 +6,7 @@ const FAILS = [
   ["F3", "VRF callbacks have no age limit; unfulfilled requests get purged after ~120 s", "A late callback can land on a round that has moved on, and a round can hang forever.", "Round state machine with a nonce: retry after 20 s (new nonce makes old callbacks stale no-ops), void + full refund after 150 s."],
   ["F4", "A crank schedule can be accepted and never run", "On 1.1.1 task IDs collide globally; on 2.0 tasks need a running Hydra cranker. Rounds never close.", "Derived task IDs + a permissionless watchdog (page + keeper) that closes due rounds. The Proof page shows crank coverage."],
   ["F5", "#[action] handlers and cranked instructions are publicly callable", "A naive payout handler is a drain.", "Escrow signer pinned to our escrow authority PDA + source program check; every crankable instruction is state- and time-checked."],
-  ["F6", "Accounts > 10,240 bytes can't be committed or undelegated", "A growing history account bricks the funds inside.", "Fixed-size ring buffers and compile-time size asserts (Table ≈ 3.7 KB, Ledger ≈ 0.6 KB)."],
+  ["F6", "Accounts > 10,240 bytes can't be committed or undelegated", "A growing history account bricks the funds inside.", "Fixed-size ring buffers and compile-time size asserts (Table 3,848 B, Ledger 601 B)."],
   ["F7", "Two truths: the Solana copy of a delegated account is stale until a commit", "Balances disagree depending on where you look.", "The UI shows rollup, wallet and in-flight balances separately; the verifier reconciles both layers."],
 ];
 

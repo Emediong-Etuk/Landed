@@ -18,6 +18,8 @@ const rdir = resolve(ROOT, "evidence/results");
 if (existsSync(rdir)) for (const f of readdirSync(rdir)) if (f.endsWith(".json")) results[f.replace(".json", "")] = JSON.parse(readFileSync(resolve(rdir, f), "utf8"));
 const tests = read<{ ran_at: string; rows: { layer: string; tests: number; passed: number; failed: number; skipped: number }[] }>("evidence/tests/summary.json");
 const dep = read<Record<string, any>>("deployments/devnet.json");
+const e2e = read<{ stats: { expected: number; unexpected: number; skipped: number; flaky: number } }>("evidence/tests/e2e.json");
+if (tests && e2e) tests.rows.push({ layer: "web E2E + axe a11y (Playwright, desktop + mobile)", tests: e2e.stats.expected + e2e.stats.unexpected, passed: e2e.stats.expected, failed: e2e.stats.unexpected, skipped: e2e.stats.skipped });
 
 const pct = (xs: number[], p: number) => (xs.length ? [...xs].sort((a, b) => a - b)[Math.min(xs.length - 1, Math.floor((p / 100) * xs.length))] : null);
 const byCampaign = new Map<string, Line[]>();
