@@ -1,0 +1,37 @@
+{
+  "name": "landed",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Landed — every win lands. Exactly-once settlement for MagicBlock Ephemeral Rollup games.",
+  "packageManager": "pnpm@10.28.0",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "pnpm --filter @landed/app dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test && pnpm test:rust",
+    "test:rust": "cargo test -p landed-core && cd tests/magicsvm && cargo test",
+    "build:programs": "./scripts/build-programs.sh",
+    "verify:devnet": "pnpm --filter @landed/verifier exec tsx src/cli.ts --cluster devnet",
+    "keeper": "pnpm --filter @landed/keeper start",
+    "deploy:devnet": "tsx scripts/deploy-devnet.ts",
+    "init:devnet": "tsx scripts/init-devnet.ts",
+    "evidence:summarize": "tsx scripts/evidence-summarize.ts",
+    "spike": "tsx spikes/run.ts",
+    "campaign:c1": "tsx tests/devnet/campaigns.ts c1",
+    "campaign:c2": "tsx tests/devnet/campaigns.ts c2",
+    "campaign:c3": "tsx tests/devnet/campaigns.ts c3",
+    "campaign:c4": "tsx tests/devnet/campaigns.ts c4",
+    "campaign:c5": "tsx tests/devnet/campaigns.ts c5",
+    "campaign:c6": "tsx tests/devnet/campaigns.ts c6",
+    "campaign:c7": "tsx tests/devnet/campaigns.ts c7",
+    "load:l1": "tsx tests/devnet/load.ts",
+    "record:broll": "pnpm --filter @landed/app exec tsx e2e/record-broll.ts",
+    "setup:local": "./scripts/setup-local.sh"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.6",
+    "turbo": "^2.5.8",
+    "typescript": "^5.9.3"
+  }
+}
