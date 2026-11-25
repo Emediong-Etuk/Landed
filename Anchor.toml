@@ -1,0 +1,21 @@
+[toolchain]
+anchor_version = "1.0.2"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+landed = "37AZMxLPm9RY8AKQk4s4oMJaovpRorGQfUmMUbTxiqGq"
+naive_cashout = "BrHd4kAtkATdaJYcv5GtyQ6ebNUneBV2yqe24EPRtxBc"
+
+[programs.devnet]
+landed = "37AZMxLPm9RY8AKQk4s4oMJaovpRorGQfUmMUbTxiqGq"
+naive_cashout = "BrHd4kAtkATdaJYcv5GtyQ6ebNUneBV2yqe24EPRtxBc"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "cd tests/magicsvm && cargo +stable test"

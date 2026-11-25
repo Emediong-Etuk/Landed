@@ -1,0 +1,29 @@
+[package]
+name = "naive-cashout"
+version = "0.1.0"
+description = "BASELINE ONLY: the documented commit + post-commit payout pattern with no rescue path. Used by the Fault Lab and campaign C3 to show stranded funds."
+edition = "2021"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "naive_cashout"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+
+[dependencies]
+anchor-lang = { version = "=1.0.2", features = ["init-if-needed"] }
+anchor-spl = { version = "=1.0.2", features = ["token", "associated_token"] }
+ephemeral-rollups-sdk = { version = "=0.18.0", features = ["anchor"] }
+
+[lints.rust]
+unexpected_cfgs = { level = "allow" }

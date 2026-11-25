@@ -1,0 +1,38 @@
+[package]
+name = "landed"
+version = "0.1.0"
+description = "Landed: exactly-once settlement for MagicBlock Ephemeral Rollup games (The Drop)"
+edition = "2021"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "landed"
+
+[features]
+default = []
+# Devnet-only: lets a player mark *their own* withdrawal so the post-commit
+# payout action fails on purpose (Fault Lab). Compiled out of mainnet builds.
+fault-lab = []
+# Test-only: allows vrf_void_secs <= 120 so void paths can be exercised quickly.
+short-timers = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+
+[dependencies]
+anchor-lang = { version = "=1.0.2", features = ["init-if-needed"] }
+anchor-spl = { version = "=1.0.2", features = ["token", "associated_token"] }
+ephemeral-rollups-sdk = { version = "=0.18.0", features = ["anchor", "vrf", "crank"] }
+session-keys = { version = "=3.1.1", features = ["no-entrypoint"] }
+landed-core = { path = "../../crates/landed-core" }
+bytemuck = { version = "1", features = ["derive", "min_const_generics"] }
+solana-instructions-sysvar = "=3.0.1"
+
+[lints.rust]
+unexpected_cfgs = { level = "allow" }
