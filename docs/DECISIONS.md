@@ -61,3 +61,13 @@ Format: **date · decision** — alternatives · why. Where the build prompt dis
 
 ### 2026-11-25 · Anchor derive crates pinned to 1.0.2 in Cargo.lock
 - `session-keys` resolves `anchor-derive-*` 1.2.2, which references `create_account_allow_prefund` missing in anchor-lang 1.0.2. Pinned all `anchor-attribute-*`, `anchor-derive-*` and `anchor-syn` to `=1.0.2` with `cargo update --precise`.
+
+### 2026-11-25 · Two SDK compute pitfalls found by MagicSVM (each burned the full 200k CU)
+1. `program_identity_pubkey(&crate::ID)` is a `const fn`; called in a normal expression it runs a software PDA search at runtime. Fixed by using the `const VRF_IDENTITY` item.
+2. `#[vrf_callback]`'s injected constraint is `address = Pubkey::new_from_array(scoped_vrf_identity_const(&crate::ID).0)`, which is also evaluated at runtime (software ed25519 PDA derivation) → every VRF callback ran out of compute. The macro skips injection when the struct already declares `vrf_program_identity`, so we declare it ourselves against `pub const VRF_CALLBACK_IDENTITY` (compile-time). Same security (scoped identity signer), ~190k CU cheaper. Worth upstreaming.
+
+### 2026-11-25 · MagicSVM runs post-commit actions synchronously; test build reproduces the live committor
+- In MagicSVM 0.3.0 a failing post-commit action fails the whole ER transaction (nothing debited): that is the "reverted & stuck" outcome, and test `s1_reverted_outcome_debits_nothing` covers it. The live committor instead removes failed actions and re-commits (dev skill), which is F1. The test-only feature `sim-committor-drop` (MagicSVM build `landed_test.so` only, never deployed) makes a fault-injected withdrawal commit **without** its action, i.e. the live outcome, so the rescue path is tested in-process. The real behavior is measured on devnet (S1, C3).
+
+### 2026-11-25 · `void_round` uses the ledger's stored bump (`create_program_address`) and clients add a 1.4M CU limit
+- 32 entrant refunds in one ER transaction passed in MagicSVM (V4) with `SetComputeUnitLimit(1_400_000)`. No batching was needed.

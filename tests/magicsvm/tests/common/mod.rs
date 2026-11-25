@@ -317,9 +317,16 @@ impl H {
     pub fn tick_slot(&mut self) -> usize {
         let t = self.now();
         let s = self.slot();
-        let n = self.svm.warp_to_slot(s + 1).len();
+        let res = self.svm.warp_to_slot(s + 1);
+        for r in &res {
+            if let Err(f) = r {
+                if std::env::var("LANDED_DEBUG").is_ok() {
+                    eprintln!("tick tx failed: {:?}\n{}", f.err, f.meta.logs.join("\n"));
+                }
+            }
+        }
         self.set_time(t);
-        n
+        res.len()
     }
 
     // ---------------------------------------------------------------- reads
@@ -612,6 +619,17 @@ pub fn top_up_escrow_ix(payer: Pubkey, authority: Pubkey, escrow: Pubkey, lampor
             AccountMeta::new(addr(escrow), false),
             AccountMeta::new_readonly(addr(SYSTEM), false),
         ],
+        data,
+    }
+}
+
+/// ComputeBudget SetComputeUnitLimit (no extra crate needed).
+pub fn cu_limit(units: u32) -> Instruction {
+    let mut data = vec![2u8];
+    data.extend_from_slice(&units.to_le_bytes());
+    Instruction {
+        program_id: addr(anchor_lang::pubkey!("ComputeBudget111111111111111111111111111111")),
+        accounts: vec![],
         data,
     }
 }

@@ -52,6 +52,11 @@ pub const DELEGATION_PROGRAM_ID: Pubkey = ephemeral_rollups_sdk::id();
 /// Hydra ephemeral crank program (validator 2.0 scheduler).
 pub const HYDRA_EPHEMERAL_ID: Pubkey = pubkey!("eHyd5BU8QffvHi4GnXwxrK4WpS7pM2x9UGKHBWii7mf");
 const VRF_IDENTITY: ([u8; 32], u8) = program_identity_pda(&crate::ID);
+/// Scoped VRF identity that signs our callbacks, computed at COMPILE time.
+/// (`#[vrf_callback]`'s injected constraint evaluates the same `const fn` at
+/// runtime, which costs > 200k CU; see docs/DECISIONS.md.)
+pub const VRF_CALLBACK_IDENTITY: Pubkey =
+    Pubkey::new_from_array(ephemeral_rollups_sdk::vrf::consts::scoped_vrf_identity_const(&crate::ID).0);
 /// Crank tick interval. The crank only advances the round when it is due, so a
 /// short tick bounds close latency without changing round length.
 pub const CRANK_INTERVAL_MS: i64 = 2_000;
@@ -719,7 +724,8 @@ pub mod landed {
             let mut l: Account<'info, Ledger> = Account::try_from(ai)?;
             let e = t.entries[i];
             require!(l.owner == e.player, LandedError::BadRefundAccounts);
-            let (pda, _) = Pubkey::find_program_address(&[LEDGER_SEED, e.player.as_ref()], &crate::ID);
+            let pda = Pubkey::create_program_address(&[LEDGER_SEED, e.player.as_ref(), &[l.bump]], &crate::ID)
+                .map_err(|_| error!(LandedError::BadRefundAccounts))?;
             require_keys_eq!(pda, ai.key(), LandedError::BadRefundAccounts);
             l.available = l.available.checked_add(e.amount).ok_or(LandedError::MathOverflow)?;
             l.credited_total = l.credited_total.checked_add(e.amount).ok_or(LandedError::MathOverflow)?;
@@ -990,7 +996,7 @@ fn request_vrf<'info>(
             accounts_metas: Some(vec![SerializableAccountMeta { pubkey: table.key(), is_signer: false, is_writable: true }]),
             callback_args: Some(args),
         },
-        ephemeral_rollups_sdk::vrf::consts::program_identity_pubkey(&crate::ID),
+        Pubkey::new_from_array(VRF_IDENTITY.0),
     );
     let id_bytes = table_id.to_le_bytes();
     invoke_signed(
@@ -1349,6 +1355,9 @@ pub struct RetryVrf<'info> {
 #[vrf_callback]
 #[derive(Accounts)]
 pub struct VrfCallback<'info> {
+    /// Scoped VRF identity: only the VRF program can sign for it, on behalf of THIS program.
+    #[account(address = VRF_CALLBACK_IDENTITY @ LandedError::Unauthorized)]
+    pub vrf_program_identity: Signer<'info>,
     #[account(mut)]
     pub table: AccountLoader<'info, Table>,
 }
