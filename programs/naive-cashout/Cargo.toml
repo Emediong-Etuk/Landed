@@ -11,6 +11,8 @@ name = "naive_cashout"
 
 [features]
 default = []
+# no-op: lets `anchor build -- --features fault-lab` run workspace-wide
+fault-lab = []
 cpi = ["no-entrypoint"]
 no-entrypoint = []
 no-idl = []

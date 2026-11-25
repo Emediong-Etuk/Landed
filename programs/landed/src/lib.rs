@@ -204,7 +204,7 @@ pub mod landed {
         let now = Clock::get()?.unix_timestamp;
         let m = &mut ctx.accounts.user_meta;
         require!(
-            m.last_faucet_ts == 0 || now >= m.last_faucet_ts + FAUCET_COOLDOWN_SECS,
+            m.faucet_total == 0 || now >= m.last_faucet_ts + FAUCET_COOLDOWN_SECS,
             LandedError::FaucetCooldown
         );
         let next = m.faucet_total.checked_add(FAUCET_AMOUNT).ok_or(LandedError::MathOverflow)?;
@@ -402,6 +402,23 @@ pub mod landed {
         let action = build_settle_action(cfg, &owner, &ctx.accounts.ledger.key(), nonce, ctx.accounts.escrow_auth.to_account_info())?;
         let a = &ctx.accounts;
         let seeds: &[&[u8]] = &[ESCROW_AUTH_SEED, &[cfg.escrow_auth_bump]];
+        // TEST-ONLY (MagicSVM): MagicSVM executes post-commit actions inside the ER
+        // transaction, so a failing action reverts the whole ER tx. The live
+        // committor instead drops the failed action and re-commits without it.
+        // This feature reproduces the live outcome (commit lands, no action) so
+        // the rescue path can be tested in-process. Never enabled for deploys.
+        #[cfg(feature = "sim-committor-drop")]
+        if inject_fault {
+            MagicIntentBundleBuilder::new(
+                a.escrow_auth.to_account_info(),
+                a.magic_context.to_account_info(),
+                a.magic_program.to_account_info(),
+            )
+            .magic_fee_vault(a.magic_fee_vault.to_account_info())
+            .commit(&[a.ledger.to_account_info()])
+            .build_and_invoke_signed(&[seeds])?;
+            return Ok(());
+        }
         MagicIntentBundleBuilder::new(
             a.escrow_auth.to_account_info(),
             a.magic_context.to_account_info(),

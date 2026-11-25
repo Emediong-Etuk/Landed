@@ -16,6 +16,8 @@ default = []
 fault-lab = []
 # Test-only: allows vrf_void_secs <= 120 so void paths can be exercised quickly.
 short-timers = []
+# Test-only (MagicSVM): reproduce the live committor dropping a failed action.
+sim-committor-drop = []
 cpi = ["no-entrypoint"]
 no-entrypoint = []
 no-idl = []
