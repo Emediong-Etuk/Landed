@@ -29,7 +29,8 @@
     "campaign:c7": "tsx tests/devnet/campaigns.ts c7",
     "load:l1": "tsx tests/devnet/load.ts",
     "record:broll": "pnpm --filter @landed/app exec tsx e2e/record-broll.ts",
-    "setup:local": "./scripts/setup-local.sh"
+    "setup:local": "./scripts/setup-local.sh",
+    "test:all": "tsx scripts/run-tests.ts"
   },
   "devDependencies": {
     "tsx": "^4.20.6",

@@ -17,3 +17,7 @@ playwright-report/
 test-results/
 .vercel
 crates/landed-core/p2-report.json
+app/test-results/
+app/playwright-report/
+app/next-env.d.ts
+*.tsbuildinfo

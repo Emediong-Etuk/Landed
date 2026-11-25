@@ -1,4 +1,5 @@
 /** Anchor event decoding from transaction logs ("Program data: <base64>"). */
+import { Buffer } from "buffer";
 import { PublicKey } from "@solana/web3.js";
 import idl from "./idl/landed.json";
 import { Reader } from "./layout";

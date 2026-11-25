@@ -1,0 +1,16 @@
+{
+  "name": "@landed/keeper",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@landed/sdk": "workspace:*",
+    "@solana/web3.js": "1.99.0",
+    "bs58": "^6.0.0",
+    "pino": "^9.9.0"
+  },
+  "devDependencies": { "@types/node": "^22.18.0", "tsx": "^4.20.6", "typescript": "^5.9.3" }
+}

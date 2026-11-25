@@ -3,6 +3,7 @@
  * mirror `tests/magicsvm/tests/common/mod.rs` exactly (the same order the
  * program's `#[derive(Accounts)]` structs expect).
  */
+import { Buffer } from "buffer";
 import { AccountMeta, PublicKey, TransactionInstruction } from "@solana/web3.js";
 import idl from "./idl/landed.json";
 import naiveIdl from "./idl/naive_cashout.json";

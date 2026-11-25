@@ -1,0 +1,62 @@
+{
+  "pitch": [
+    {
+      "t": 0,
+      "label": "You won. Did you get paid?"
+    },
+    {
+      "t": 12,
+      "label": "Ada + the problem"
+    },
+    {
+      "t": 40,
+      "label": "Demo: guest \u2192 drop \u2192 VRF reveal"
+    },
+    {
+      "t": 95,
+      "label": "Cash out lands"
+    },
+    {
+      "t": 115,
+      "label": "Fault Lab: naive strands, Landed rescues"
+    },
+    {
+      "t": 135,
+      "label": "Verify"
+    },
+    {
+      "t": 145,
+      "label": "Results"
+    },
+    {
+      "t": 170,
+      "label": "Every win lands."
+    }
+  ],
+  "tech": [
+    {
+      "t": 0,
+      "label": "Architecture & accounts"
+    },
+    {
+      "t": 50,
+      "label": "Settlement protocol + Phase 0"
+    },
+    {
+      "t": 120,
+      "label": "Explorer walkthrough"
+    },
+    {
+      "t": 190,
+      "label": "Safety"
+    },
+    {
+      "t": 230,
+      "label": "Tests & verifier"
+    },
+    {
+      "t": 270,
+      "label": "Limitations"
+    }
+  ]
+}
