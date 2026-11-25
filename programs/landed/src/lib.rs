@@ -38,6 +38,7 @@ use ephemeral_rollups_sdk::{ActionArgs, ShortAccountMeta};
 use session_keys::SessionTokenV2;
 
 pub mod errors;
+pub mod hashing;
 pub mod events;
 pub mod state;
 
@@ -153,8 +154,7 @@ pub mod landed {
         t.vrf_retry_secs = c.vrf_retry_secs;
         t.vrf_void_secs = c.vrf_void_secs;
         t.house_fee_bps = c.house_fee_bps;
-        t.crank_task_id =
-            landed_core::crank_task_id(&crate::ID.to_bytes(), &ctx.accounts.table.key().to_bytes());
+        t.crank_task_id = hashing::crank_task_id(&crate::ID.to_bytes(), &ctx.accounts.table.key().to_bytes());
         t.bump = ctx.bumps.table;
         Ok(())
     }
@@ -982,7 +982,7 @@ fn request_vrf<'info>(
     req: (u64, u64, [u8; 32], i64, u64, u8),
 ) -> Result<()> {
     let (table_id, round_id, entries_hash, closes_ts, vrf_nonce, bump) = req;
-    let seed = landed_core::vrf_caller_seed(table_id, round_id, &entries_hash, closes_ts, vrf_nonce);
+    let seed = hashing::vrf_caller_seed(table_id, round_id, &entries_hash, closes_ts, vrf_nonce);
     let mut args = Vec::with_capacity(16);
     args.extend_from_slice(&round_id.to_le_bytes());
     args.extend_from_slice(&vrf_nonce.to_le_bytes());

@@ -288,7 +288,7 @@ impl Table {
     pub fn compute_entries_hash(&self) -> [u8; 32] {
         let (p, n) = self.players();
         let (a, _) = self.amounts();
-        landed_core::entries_hash(&p[..n], &a[..n])
+        crate::hashing::entries_hash(&p[..n], &a[..n])
     }
     pub fn push_history(&mut self, r: RoundResult) {
         let i = (self.history_len % HISTORY_SIZE as u64) as usize;

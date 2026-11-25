@@ -2156,6 +2156,7 @@ dependencies = [
  "landed-core",
  "session-keys",
  "solana-instructions-sysvar 3.0.1",
+ "solana-sha256-hasher 3.1.0",
 ]
 
 [[package]]

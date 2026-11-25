@@ -71,3 +71,6 @@ Format: **date · decision** — alternatives · why. Where the build prompt dis
 
 ### 2026-11-25 · `void_round` uses the ledger's stored bump (`create_program_address`) and clients add a 1.4M CU limit
 - 32 entrant refunds in one ER transaction passed in MagicSVM (V4) with `SetComputeUnitLimit(1_400_000)`. No batching was needed.
+
+### 2026-11-25 · `opt-level = "s"` + sha256 syscall: 915 KB → 712 KB program
+- Rent is per byte, so the binary size is the deploy cost (~6.4 SOL → ~5.0 SOL). `opt-level="s"` for all crates cut 17%, but made software `sha2` too slow: `close_round` with 32 entrants exceeded 200k CU. A crank tick cannot add a compute-budget instruction, so the program now hashes through the `sol_sha256` syscall (`programs/landed/src/hashing.rs`). Byte-identical to `landed-core` (unit test over 0–32 entries); `landed-core` keeps software sha2 for host tests, golden vectors and the TS port.

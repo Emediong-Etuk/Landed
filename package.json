@@ -2,9 +2,11 @@
   "name": "landed",
   "private": true,
   "version": "0.1.0",
-  "description": "Landed — every win lands. Exactly-once settlement for MagicBlock Ephemeral Rollup games.",
+  "description": "Landed \u2014 every win lands. Exactly-once settlement for MagicBlock Ephemeral Rollup games.",
   "packageManager": "pnpm@10.28.0",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "pnpm --filter @landed/app dev",
     "build": "turbo run build",
@@ -32,6 +34,10 @@
   "devDependencies": {
     "tsx": "^4.20.6",
     "turbo": "^2.5.8",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "@landed/sdk": "workspace:*",
+    "@landed/verifier": "workspace:*",
+    "@solana/web3.js": "1.99.0",
+    "@types/node": "^22.18.0"
   }
 }
