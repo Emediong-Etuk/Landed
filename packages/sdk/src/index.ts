@@ -6,3 +6,4 @@ export * from "./ix";
 export * from "./tracker";
 export * from "./explorer";
 export * from "./client";
+export * from "./events";
